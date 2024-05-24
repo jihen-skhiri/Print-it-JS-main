@@ -1,85 +1,80 @@
-const slides = [
-	{
-		"image":"slide1.jpg",
-		"tagLine":"Impressions tous formats <span>en boutique et en ligne</span>"
-	},
-	{
-		"image":"slide2.jpg",
-		"tagLine":"Tirages haute définition grand format <span>pour vos bureaux et events</span>"
-	},
-	{
-		"image":"slide3.jpg",
-		"tagLine":"Grand choix de couleurs <span>de CMJN aux pantones</span>"
-	},
-	{
-		"image":"slide4.png",
-		"tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
-	}
-]
+document.addEventListener("DOMContentLoaded", function() {
+    const slides = [
+        {
+            "image":"slide1.jpg",
+            "tagLine":"Impressions tous formats <span>en boutique et en ligne</span>"
+        },
+        {
+            "image":"slide2.jpg",
+            "tagLine":"Tirages haute définition grand format <span>pour vos bureaux et events</span>"
+        },
+        {
+            "image":"slide3.jpg",
+            "tagLine":"Grand choix de couleurs <span>de CMJN aux pantones</span>"
+        },
+        {
+            "image":"slide4.png",
+            "tagLine":"Autocollants <span>avec découpe laser sur mesure</span>"
+        }
+    ]
 
+    let currentSlide = 0;
 
-/*fonction Ajout des bullets points */
-let dots = document.querySelector(".dots");
-AddBullets();
-function AddBullets() {
-	
-	for(let i=0; i<slides.length;i++) {
-		let newdot = document.createElement("span")
-		newdot.classList.add("dot")
-		if (i === 0) newdot.classList.add('dot_selected');
-        newdot.dataset.i = i;
-		dots.appendChild(newdot)
-	}	
-}
-/************************Update Bullets*************************/
-let point = document.querySelectorAll(".dot")
-function currentslide(n){
-	
-	for(i=0; i<point.length;i++) {
-		point[i].classList.toggle('dot_selected', i===n);	
-		
-	};
-	
-	}
-/*******Change slide en click sur Bullet */
+    const slideImage = document.getElementById('slide');
+    const tagline = document.querySelector('#banner p');
+    const dots = document.querySelectorAll('.dot'); 
+    const dotsList = document.querySelector('.dots');
 
-function ClickBullet(){
-for (let i = 0; i < point.length; i++) {
-        point[i].addEventListener('click', (e) => {
-            numero = parseInt(e.target.dataset.i);
-           changeSlide(numero);
+    // Création Bullets points
+    function createDot () {
+        slides.forEach((slide, index) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('dot_selected');
+            dot.dataset.index = index;
+            dotsList.appendChild(dot);
         });
+        
+    console.log(dotsList) 
+}
+ createDot();   
 
+    function showSlide(index) {
+        if (index >= slides.length) {
+            currentSlide = 0;
+        } else if (index < 0) {
+            currentSlide = slides.length - 1;
+        } else {
+            currentSlide = index;
+        }
+        slideImage.src = "./assets/images/slideshow/" + slides[currentSlide].image;
+        tagline.innerHTML = slides[currentSlide].tagLine;
+        updateDots();
     }
-}
+   
+    function updateDots() {
+        dots.forEach((dot, idx) => {
+            dot.classList.remove('dot_selected');
+            if (idx === currentSlide) {
+                dot.classList.add('dot_selected');
+            }
+        });
+    }
 
-ClickBullet()
+    document.getElementById('slideright').addEventListener('click', function() {
+        showSlide(currentSlide + 1);
+    });
 
+    document.getElementById('slideleft').addEventListener('click', function() {
+        showSlide(currentSlide - 1);
+    });
 
-/***************fonction pour modifier le slide***********************/
-let right = document.getElementById("slideright")
-let left = document.getElementById("slideleft")
-let numero = 0;
-let sens = 0
-function changeSlide(sens) {
-	numero = numero + sens;
-	let tag = document.querySelector("#banner p")
-	for(let i=0; i<slides.length; i++) {
-		document.getElementById("slide").src = "./assets//images/slideshow/" + slides[numero].image;
-		tag.innerHTML = slides[numero].tagLine;	
-		currentslide(numero)
-		
-	}	
-	
-	
-}
-/*******défilement infini */
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', function() {
+            showSlide(index);
+        });
+    });
 
-
-right.addEventListener("click", changeSlide(sens));
-left.addEventListener("click", changeSlide(sens));
-
-
-
-
-
+    // Initialiser les slides
+    showSlide(currentSlide);
+});
