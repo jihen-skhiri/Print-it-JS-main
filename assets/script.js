@@ -22,8 +22,11 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const slideImage = document.getElementById('slide');
     const tagline = document.querySelector('#banner p');
-    const dots = document.querySelectorAll('.dot'); 
+
     const dotsList = document.querySelector('.dots');
+    createDot() 
+    updateDots()
+    clickDots()  
 
     // Création Bullets points
     function createDot () {
@@ -35,9 +38,7 @@ document.addEventListener("DOMContentLoaded", function() {
             dotsList.appendChild(dot);
         });
         
-    console.log(dotsList) 
 }
- createDot();   
 
     function showSlide(index) {
         if (index >= slides.length) {
@@ -50,15 +51,19 @@ document.addEventListener("DOMContentLoaded", function() {
         slideImage.src = "./assets/images/slideshow/" + slides[currentSlide].image;
         tagline.innerHTML = slides[currentSlide].tagLine;
         updateDots();
+       
     }
    
     function updateDots() {
-        dots.forEach((dot, idx) => {
-            dot.classList.remove('dot_selected');
-            if (idx === currentSlide) {
+        const dots = document.querySelectorAll('.dot'); 
+        dots.forEach((dot, index) => {
+            if (index === currentSlide) {
                 dot.classList.add('dot_selected');
+            } else {
+                dot.classList.remove('dot_selected');
             }
         });
+        console.log(dotsList) 
     }
 
     document.getElementById('slideright').addEventListener('click', function() {
@@ -68,13 +73,14 @@ document.addEventListener("DOMContentLoaded", function() {
     document.getElementById('slideleft').addEventListener('click', function() {
         showSlide(currentSlide - 1);
     });
-
+function clickDots(){
+    const dots = document.querySelectorAll('.dot'); 
     dots.forEach((dot, index) => {
-        dot.addEventListener('click', function() {
-            showSlide(index);
+        dot.addEventListener('click', ()=> {
+            currentSlide = index
+            showSlide(currentSlide);
         });
     });
+}
 
-    // Initialiser les slides
-    showSlide(currentSlide);
 });
