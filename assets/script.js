@@ -53,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function() {
         updateDots();
        
     }
-   
+    
     function updateDots() {
         const dots = document.querySelectorAll('.dot'); 
         dots.forEach((dot, index) => {
@@ -63,7 +63,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 dot.classList.remove('dot_selected');
             }
         });
-        console.log(dotsList) 
     }
 
     document.getElementById('slideright').addEventListener('click', function() {
